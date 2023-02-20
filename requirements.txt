@@ -1,4 +1,4 @@
 transcribe
 streamlit
 streamlit_authenticator
-hashed_pw.pkl
+hashed_pw
