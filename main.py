@@ -1,6 +1,6 @@
 import requests
 import streamlit as st
-#import transcribe
+import transcribe
 import time
 import sys
 from zipfile import ZipFile
