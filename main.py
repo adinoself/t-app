@@ -12,7 +12,7 @@ import streamlit_authenticator as stauth
 
 auth_key = st.secrets['auth_key']
 
-st.header("Transcription Service")
+st.header("Songa Prime Online Transcription")
 
 # --- USER AUTHENTICATION ---
 names = ["Joseph Modi", "Emmah Wavinya", "Raissa A", "Abdul M", "Fuji Cheruiyot", "Eva Kimani", "Yusuf Kariuki", "George Orembo"]
