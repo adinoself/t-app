@@ -15,8 +15,8 @@ auth_key = st.secrets['auth_key']
 st.header("Songa Prime Online Transcription")
 
 # --- USER AUTHENTICATION ---
-names = ["Joseph Modi", "Emmah Wavinya", "Raissa A", "Abdul M", "Fuji Cheruiyot", "Eva Kimani", "Yusuf Kariuki", "George Orembo"]
-usernames = ["adinoself", "missdivine", "raissanbg", "abdulnbg", "fujicheruiyot", "evakimani", "yusufkariuki", "georgeorembo"]
+names = ["Joseph Modi", "Emmah Wavinya", "Raissa A", "Abdul M", "Fuji Cheruiyot", "Eva Kimani", "Yusuf Kariuki", "George Orembo", "Rael Orgut"]
+usernames = ["adinoself", "missdivine", "raissanbg", "abdulnbg", "fujicheruiyot", "evakimani", "yusufkariuki", "georgeorembo", "raelorgut"]
 credentials = {"usernames": {}}
 
 # LOAD HASHED PASSWORDS
