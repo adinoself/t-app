@@ -9,6 +9,7 @@ import os
 import pickle
 from pathlib import Path
 import streamlit_authenticator as stauth
+from docx import Document
 
 auth_key = st.secrets['auth_key']
 
@@ -170,17 +171,17 @@ if authentication_status:
         # SAVE TRANSCRIBED TEXT TO A FILE
 
         # SAVE AS A TXT FILE
-        yt_txt = open('plain text transcript.docx', 'w')
-        yt_txt.write(result["text"])
-        yt_txt.close()
+        doc = Document()
+        doc.add_paragraph(result["text"])
+        doc.save('plain text transcript.docx')
 
         # SAVE AS A TXT FILE WITH SPEAKER LABELS
-        yt_txt = open('transcript with speaker labels.docx', 'w')
+        doc = Document()
         for utterance in result["utterances"]:
             speaker = utterance["speaker"]
             text = utterance["text"]
-            yt_txt.write(f"Speaker {speaker}: {text}\n")
-        yt_txt.close()
+            doc.add_paragraph(f"Speaker {speaker}: {text}")
+        doc.save('transcript with speaker labels.docx')
 
         # SAVE AS SRT FILE
         endpoint = f"https://api.assemblyai.com/v2/transcript/{transcribe_id}"
@@ -199,6 +200,7 @@ if authentication_status:
         zip_file.write('transcript with time stamps.docx')
         zip_file.write('transcript with speaker labels.docx')
         zip_file.close()
+
 
         with open("transcription.zip", "rb") as zip_download:
             btn = st.download_button(
