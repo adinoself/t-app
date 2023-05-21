@@ -10,10 +10,20 @@ import pickle
 from pathlib import Path
 import streamlit_authenticator as stauth
 from docx import Document
+from zipfile import ZipFile
+import base64
 
 auth_key = st.secrets['auth_key']
 
 st.header("Transcription Service")
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 # --- USER AUTHENTICATION ---
 names = ["Joseph Modi", "Emmah Wavinya", "Raissa A", "Abdul M", "Fuji Cheruiyot", "Eva Kimani", "Yusuf Kariuki", "George Orembo", "Rael Orgut"]
@@ -195,16 +205,40 @@ if authentication_status:
             _file.write(srt_response.text)
             print(srt_response)
 
-        zip_file = ZipFile('transcription.zip', 'w')
-        zip_file.write('plain text transcript.docx')
-        zip_file.write('transcript with time stamps.docx')
-        zip_file.write('transcript with speaker labels.docx')
-        zip_file.close()
+        # Create a zip file
+        with ZipFile('transcription.zip', 'w') as zip_file:
+            zip_file.write('plain text transcript.docx')
+            zip_file.write('transcript with speaker labels.docx')
+            zip_file.write('transcript with time stamps.txt')
 
-        with open("transcription.zip", "rb") as zip_download:
-            btn = st.download_button(
-                label="Download Transcript",
-                data=zip_download,
-                file_name="transcription.zip",
-                mime="zip"
-            )
+        # Generate base64 encoded data for the zip file
+        with open("transcription.zip", "rb") as zip_file:
+            zip_data = zip_file.read()
+            zip_data_base64 = base64.b64encode(zip_data).decode()
+
+        # Display download buttons
+        st.subheader("Download Transcripts")
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            download_filename1 = "plain_text_transcript.docx"
+            download_link1 = f'<a href="data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,{base64.b64encode(open("plain text transcript.docx", "rb").read()).decode()}" download="{download_filename1}">Download Plain Text Transcript.docx</a>'
+            st.markdown(download_link1, unsafe_allow_html=True)
+
+        with col2:
+            download_filename2 = "transcript_with_speaker_labels.docx"
+            download_link2 = f'<a href="data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,{base64.b64encode(open("transcript with speaker labels.docx", "rb").read()).decode()}" download="{download_filename2}">Download Transcript with Speaker Labels.docx</a>'
+            st.markdown(download_link2, unsafe_allow_html=True)
+
+        with col3:
+            download_filename3 = "transcript_with_time_stamps.txt"
+            download_link3 = f'<a href="data:text/plain;base64,{base64.b64encode(open("transcript with time stamps.txt", "rb").read()).decode()}" download="{download_filename3}">Download Transcript with Time Stamps.txt</a>'
+            st.markdown(download_link3, unsafe_allow_html=True)
+
+        # Display download buttons
+        st.subheader("Download All Transcripts")
+
+        # Display download zip button
+        download_filename_zip = "transcription.zip"
+        download_link_zip = f'<a href="data:application/zip;base64,{zip_data_base64}" download="{download_filename_zip}">Download All Transcripts as ZIP</a>'
+        st.markdown(download_link_zip, unsafe_allow_html=True)
