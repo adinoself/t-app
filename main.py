@@ -201,7 +201,7 @@ if authentication_status:
         result = requests.get(endpoint, headers=headers).json()
         srt_endpoint = endpoint + "/srt"
         srt_response = requests.get(srt_endpoint, headers=headers)
-        with open("transcript with time stamps.docx", "w") as _file:
+        with open("transcript with time stamps.txt", "w") as _file:
             _file.write(srt_response.text)
             print(srt_response)
 
@@ -209,7 +209,7 @@ if authentication_status:
         with ZipFile('transcription.zip', 'w') as zip_file:
             zip_file.write('plain text transcript.docx')
             zip_file.write('transcript with speaker labels.docx')
-            zip_file.write('transcript with time stamps.docx')
+            zip_file.write('transcript with time stamps.txt')
 
         # Generate base64 encoded data for the zip file
         with open("transcription.zip", "rb") as zip_file:
